@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faizah & Azhar — Our World</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  /* ============================================
+     EASY EDITING GUIDE
+     - To change names: search "Faizah" or "Azhar"
+     - To change a photo: replace the img src="" with your photo path
+     - To add a new place: copy a .chapter block and paste it
+     - To change colors: edit the :root variables below
+  ============================================ */
+
+  :root {
+    --cream: #f5ede0;
+    --dark: #1c120a;
+    --gold: #b8924a;
+    --gold-light: #e8d5a8;
+    --rose: #c47a62;
+    --text: #2e1f12;
+    --muted: #7a5c47;
+    --film: rgba(28, 18, 10, 0.06);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── Film grain overlay ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── NAVIGATION ── */
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    background: linear-gradient(to bottom, rgba(245,237,224,0.95), transparent);
+    transition: background 0.4s;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: var(--dark);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--dark); }
+
+  /* ── HERO ── */
+  .hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  /* Replace this with a real hero image by changing background-image */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, #d4b896 0%, #c49a6c 30%, #8b5e3c 70%, #3d2010 100%);
+    z-index: 0;
+  }
+
+  /* ↓ HERO PHOTO: uncomment and add your path to use a real photo
+  .hero-bg {
+    background-image: url('your-hero-photo.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+  */
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(28,18,10,0.1) 0%, rgba(28,18,10,0.45) 100%);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    color: #f8f0e3;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 9vw, 7.5rem);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.5s forwards;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-sub {
+    font-size: 0.78rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(248,240,227,0.7);
+    opacity: 0;
+    animation: fadeUp 1s ease 0.8s forwards;
+  }
+
+  .hero-year {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    color: rgba(248,240,227,0.5);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.2s forwards;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, transparent, rgba(248,240,227,0.5));
+    animation: pulse 2s ease infinite;
+  }
+
+  /* ── INTRO SECTION ── */
+  .intro {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 8rem 2rem 6rem;
+    text-align: center;
+  }
+
+  .section-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 2rem;
+  }
+
+  .intro-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .intro-text em {
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 4rem auto;
+    max-width: 400px;
+    padding: 0 2rem;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+  }
+
+  .divider-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* ── PORTRAITS ── */
+  .portraits {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    max-width: 900px;
+    margin: 0 auto 8rem;
+    padding: 0 2rem;
+  }
+
+  .portrait-card {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+  }
+
+  /* Each portrait has a placeholder gradient — replace with your photos */
+  .portrait-card:nth-child(1) .portrait-img {
+    background: linear-gradient(135deg, #c4956a 0%, #a06840 50%, #7a4f2d 100%);
+  }
+
+  .portrait-card:nth-child(2) .portrait-img {
+    background: linear-gradient(135deg, #8b6b4a 0%, #6b4c2a 50%, #4a3018 100%);
+    margin-top: 3rem; /* stagger effect */
+  }
+
+  /* ↓ PORTRAIT PHOTOS: replace background with your image
+  .portrait-card:nth-child(1) .portrait-img {
+    background-image: url('faizah-photo.jpg');
+    background-size: cover;
+    background-position: center top;
+  }
+  */
+
+  .portrait-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+  }
+
+  .portrait-card:hover .portrait-img { transform: scale(1.04); }
+
+  .portrait-label {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    color: rgba(248,240,227,0.9);
+    z-index: 2;
+  }
+
+  .portrait-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    font-style: italic;
+    display: block;
+  }
+
+  .portrait-role {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    opacity: 0.8;
+  }
+
+  .portrait-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(28,18,10,0.6) 0%, transparent 50%);
+  }
+
+  /* ── CHAPTER LAYOUT ── */
+  .chapters {
+    padding: 2rem 0 6rem;
+  }
+
+  .chapters-header {
+    text-align: center;
+    padding: 2rem 2rem 5rem;
+  }
+
+  .chapters-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300;
+    color: var(--text);
+  }
+
+  .chapter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 75vh;
+    margin-bottom: 2px;
+    position: relative;
+  }
+
+  .chapter.reverse { direction: rtl; }
+  .chapter.reverse > * { direction: ltr; }
+
+  .chapter-img-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ↓ PLACE PHOTOS: Add your photo path as background-image on each .chapter-img div */
+  /* Example: background-image: url('istanbul.jpg'); background-size: cover; */
+
+  .chapter-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+    min-height: 450px;
+  }
+
+  .chapter-img-wrap:hover .chapter-img { transform: scale(1.03); }
+
+  /* Placeholder gradient backgrounds for each chapter — replace with your images */
+  .place-1 { background: linear-gradient(135deg, #c4a882 0%, #9b7450 60%, #6b4a28 100%); }
+  .place-2 { background: linear-gradient(135deg, #7a9a8a 0%, #4a7060 60%, #2a5040 100%); }
+  .place-3 { background: linear-gradient(135deg, #c4847a 0%, #9b5048 60%, #6b2820 100%); }
+  .place-4 { background: linear-gradient(135deg, #849ab4 0%, #4a607a 60%, #2a4058 100%); }
+  .place-5 { background: linear-gradient(135deg, #b4a482 0%, #8a7850 60%, #5a5028 100%); }
+
+  .chapter-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 5rem;
+    background: var(--cream);
+    position: relative;
+  }
+
+  .chapter-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--gold-light);
+    line-height: 1;
+    margin-bottom: -0.5rem;
+    display: block;
+  }
+
+  .chapter-location {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+
+  .chapter-place-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+
+  .chapter-desc {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: var(--muted);
+    max-width: 380px;
+    margin-bottom: 2rem;
+  }
+
+  .chapter-meta {
+    display: flex;
+    gap: 2rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .chapter-meta span { display: flex; flex-direction: column; gap: 0.3rem; }
+  .chapter-meta strong {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--text);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  /* ── PHOTO GRID (gallery strip) ── */
+  .gallery-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin: 0 0 2px;
+  }
+
+  .gallery-cell {
+    aspect-ratio: 1;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Gallery placeholder gradients — swap with your extra photos */
+  .g1 { background: linear-gradient(135deg, #d4b08a, #a07040); }
+  .g2 { background: linear-gradient(135deg, #8aad9a, #4a7060); }
+  .g3 { background: linear-gradient(135deg, #d4907a, #9a5040); }
+  .g4 { background: linear-gradient(135deg, #aab4c4, #5a7090); }
+
+  .gallery-cell img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .gallery-cell:hover img { transform: scale(1.08); }
+
+  .gallery-label {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 1rem;
+    background: linear-gradient(to top, rgba(28,18,10,0.5), transparent);
+    color: rgba(248,240,227,0.85);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .gallery-cell:hover .gallery-label { opacity: 1; }
+
+  /* ── QUOTE SECTION ── */
+  .quote-section {
+    text-align: center;
+    padding: 8rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .quote-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, #2e1f12 0%, #1c120a 100%);
+    z-index: 0;
+  }
+
+  .quote-content { position: relative; z-index: 1; }
+
+  .quote-mark {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 8rem;
+    color: var(--gold);
+    opacity: 0.3;
+    line-height: 0.5;
+    display: block;
+    margin-bottom: 2rem;
+  }
+
+  .quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--cream);
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    line-height: 1.5;
+  }
+
+  .quote-attr {
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ── TIMELINE ── */
+  .timeline {
+    padding: 8rem 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .timeline-header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+
+  .timeline-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    color: var(--text);
+  }
+
+  .timeline-items {
+    position: relative;
+    padding-left: 3rem;
+  }
+
+  .timeline-items::before {
+    content: '';
+    position: absolute;
+    left: 0.7rem;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold-light), var(--gold), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 3rem;
+    opacity: 0;
+    transform: translateX(-15px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .timeline-item.visible { opacity: 1; transform: translateX(0); }
+
+  .timeline-dot {
+    position: absolute;
+    left: -2.35rem;
+    top: 0.3rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--cream);
+    box-shadow: 0 0 0 2px var(--gold);
+  }
+
+  .timeline-year {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .timeline-event {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+
+  .timeline-note {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 5rem 2rem;
+    border-top: 1px solid rgba(184, 146, 74, 0.2);
+  }
+
+  .footer-names {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  .footer-names em { font-style: italic; color: var(--rose); }
+
+  .footer-since {
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 3rem;
+  }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: var(--muted);
+    opacity: 0.6;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(25px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+
+    .chapter { grid-template-columns: 1fr; }
+    .chapter.reverse { direction: ltr; }
+    .chapter-img { min-height: 300px; }
+    .chapter-content { padding: 2.5rem 1.5rem; }
+    .chapter-number { font-size: 3rem; }
+
+    .portraits { grid-template-columns: 1fr; max-width: 400px; }
+    .portrait-card:nth-child(2) .portrait-img { margin-top: 0; }
+    .portrait-card { aspect-ratio: 4/5; }
+
+    .gallery-strip { grid-template-columns: repeat(2, 1fr); }
+
+    .intro { padding: 5rem 1.5rem 4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav>
+  <a href="#" class="nav-logo">F & A</a>
+  <ul class="nav-links">
+    <li><a href="#story">Our Story</a></li>
+    <li><a href="#places">Places</a></li>
+    <li><a href="#timeline">Journey</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">A travel documentary</p>
+    <h1 class="hero-title">Our <em>World,</em><br>Our Story</h1>
+    <p class="hero-sub">Faizah &amp; Azhar &nbsp;·&nbsp; Since 2019</p>
+  </div>
+  <div class="hero-year">
+    <div class="scroll-line"></div>
+    <span>Scroll to explore</span>
+  </div>
+</section>
+
+<!-- ── INTRO ── -->
+<section class="intro fade-in" id="story">
+  <span class="section-label">About us</span>
+  <p class="intro-text">
+    We are <em>Faizah Fatima</em> and <em>MD Azhar Uddin</em> — two people who found each other in 2019 
+    and have been collecting moments ever since. We don't always travel together, but every place 
+    we visit becomes part of the same story. This is that story.
+  </p>
+</section>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <div class="divider-dot"></div>
+  <div class="divider-line"></div>
+</div>
+
+<!-- ── PORTRAITS ── -->
+<!--
+  HOW TO ADD YOUR PHOTOS:
+  Replace the <div class="portrait-img place-X"> with:
+  <img class="portrait-img" src="your-photo.jpg" alt="Faizah">
+-->
+<div class="portraits fade-in">
+  <div class="portrait-card">
+    <div class="portrait-img place-1"></div>
+    <!-- Replace above line with: <img class="portrait-img" src="faizah.jpg" alt="Faizah"> -->
+    <div class="portrait-label">
+      <span class="portrait-name">Faizah</span>
+      <span class="portrait-role">The dreamer</span>
+    </div>
+  </div>
+  <div class="portrait-card">
+    <div class="portrait-img place-2" style="margin-top:3rem;height:calc(100% - 3rem)"></div>
+    <!-- Replace above line with: <img class="portrait-img" src="azhar.jpg" alt="Azhar" style="margin-top:3rem"> -->
+    <div class="portrait-label">
+      <span class="portrait-name">Azhar</span>
+      <span class="portrait-role">The adventurer</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── CHAPTER BREAK ── -->
+<div class="divider" style="margin-top:6rem">
+  <div class="divider-line"></div>
+  <div class="divider-dot"></div>
+  <div class="divider-line"></div>
+</div>
+
+<!-- ── CHAPTERS (Places we visited) ── -->
+<section class="chapters" id="places">
+  <div class="chapters-header fade-in">
+    <span class="section-label">Chapters</span>
+    <h2 class="chapters-title">Places we have been</h2>
+  </div>
+
+  <!--
+    ╔═══════════════════════════════════════════════════════╗
+    ║  TO ADD A NEW PLACE:                                  ║
+    ║  1. Copy one .chapter block below                     ║
+    ║  2. Paste it after the last chapter                   ║
+    ║  3. Change the chapter number, location name, etc.    ║
+    ║  4. Replace .place-X with your image                  ║
+    ╚═══════════════════════════════════════════════════════╝
+  -->
+
+  <!-- Chapter 01 -->
+  <article class="chapter fade-in">
+    <div class="chapter-img-wrap">
+      <div class="chapter-img place-1"></div>
+      <!-- TO USE YOUR PHOTO: replace line above with:
+      <img class="chapter-img" src="place1.jpg" alt="Place Name"> -->
+    </div>
+    <div class="chapter-content">
+      <span class="chapter-number">01</span>
+      <p class="chapter-location">✦ Add location here</p>
+      <h2 class="chapter-place-name">Place Name<br>Goes Here</h2>
+      <p class="chapter-desc">
+        Write a short description of this place — what you saw, how it felt, 
+        what memory it left behind. This is your story to tell.
+      </p>
+      <div class="chapter-meta">
+        <span>Visited<strong>Year</strong></span>
+        <span>Who<strong>Faizah / Azhar</strong></span>
+      </div>
+    </div>
+  </article>
+
+  <!-- Chapter 02 -->
+  <article class="chapter reverse fade-in">
+    <div class="chapter-img-wrap">
+      <div class="chapter-img place-2"></div>
+    </div>
+    <div class="chapter-content">
+      <span class="chapter-number">02</span>
+      <p class="chapter-location">✦ Add location here</p>
+      <h2 class="chapter-place-name">Place Name<br>Goes Here</h2>
+      <p class="chapter-desc">
+        Write a short description of this place — what you saw, how it felt, 
+        what memory it left behind. This is your story to tell.
+      </p>
+      <div class="chapter-meta">
+        <span>Visited<strong>Year</strong></span>
+        <span>Who<strong>Faizah / Azhar</strong></span>
+      </div>
+    </div>
+  </article>
+
+  <!-- Chapter 03 -->
+  <article class="chapter fade-in">
+    <div class="chapter-img-wrap">
+      <div class="chapter-img place-3"></div>
+    </div>
+    <div class="chapter-content">
+      <span class="chapter-number">03</span>
+      <p class="chapter-location">✦ Add location here</p>
+      <h2 class="chapter-place-name">Place Name<br>Goes Here</h2>
+      <p class="chapter-desc">
+        Write a short description of this place — what you saw, how it felt, 
+        what memory it left behind. This is your story to tell.
+      </p>
+      <div class="chapter-meta">
+        <span>Visited<strong>Year</strong></span>
+        <span>Who<strong>Faizah / Azhar</strong></span>
+      </div>
+    </div>
+  </article>
+
+  <!-- Chapter 04 -->
+  <article class="chapter reverse fade-in">
+    <div class="chapter-img-wrap">
+      <div class="chapter-img place-4"></div>
+    </div>
+    <div class="chapter-content">
+      <span class="chapter-number">04</span>
+      <p class="chapter-location">✦ Add location here</p>
+      <h2 class="chapter-place-name">Place Name<br>Goes Here</h2>
+      <p class="chapter-desc">
+        Write a short description of this place — what you saw, how it felt, 
+        what memory it left behind. This is your story to tell.
+      </p>
+      <div class="chapter-meta">
+        <span>Visited<strong>Year</strong></span>
+        <span>Who<strong>Faizah / Azhar</strong></span>
+      </div>
+    </div>
+  </article>
+
+  <!-- Chapter 05 -->
+  <article class="chapter fade-in">
+    <div class="chapter-img-wrap">
+      <div class="chapter-img place-5"></div>
+    </div>
+    <div class="chapter-content">
+      <span class="chapter-number">05</span>
+      <p class="chapter-location">✦ Add location here</p>
+      <h2 class="chapter-place-name">Place Name<br>Goes Here</h2>
+      <p class="chapter-desc">
+        Write a short description of this place — what you saw, how it felt, 
+        what memory it left behind. This is your story to tell.
+      </p>
+      <div class="chapter-meta">
+        <span>Visited<strong>Year</strong></span>
+        <span>Who<strong>Faizah / Azhar</strong></span>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+<!-- ── GALLERY STRIP ── -->
+<!--
+  TO ADD EXTRA PHOTOS: replace each .gallery-cell div's background class
+  with an <img> tag like: <img src="extra1.jpg" alt="">
+-->
+<div class="gallery-strip fade-in">
+  <div class="gallery-cell g1">
+    <div class="gallery-label">Moment</div>
+  </div>
+  <div class="gallery-cell g2">
+    <div class="gallery-label">Memory</div>
+  </div>
+  <div class="gallery-cell g3">
+    <div class="gallery-label">Together</div>
+  </div>
+  <div class="gallery-cell g4">
+    <div class="gallery-label">Always</div>
+  </div>
+</div>
+
+<!-- ── QUOTE ── -->
+<section class="quote-section fade-in">
+  <div class="quote-bg"></div>
+  <div class="quote-content">
+    <span class="quote-mark">"</span>
+    <!-- Change this quote to something meaningful to you both -->
+    <p class="quote-text">
+      Not all those who wander are lost — some are just finding their way to each other.
+    </p>
+    <p class="quote-attr">Faizah &amp; Azhar &nbsp;·&nbsp; 2019 onwards</p>
+  </div>
+</section>
+
+<!-- ── TIMELINE ── -->
+<section class="timeline" id="timeline">
+  <div class="timeline-header fade-in">
+    <span class="section-label">Our journey</span>
+    <h2 class="timeline-title">How it has unfolded</h2>
+  </div>
+
+  <!--
+    TIMELINE EDITING:
+    Add or remove .timeline-item blocks as needed.
+    Change the year, event name, and description.
+  -->
+  <div class="timeline-items">
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <p class="timeline-year">2019</p>
+      <h3 class="timeline-event">Where it all began</h3>
+      <p class="timeline-note">Write about how you two met or the start of your relationship here.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <p class="timeline-year">Add year</p>
+      <h3 class="timeline-event">First place visited</h3>
+      <p class="timeline-note">Add the name of this place and a short note about the trip.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <p class="timeline-year">Add year</p>
+      <h3 class="timeline-event">Another milestone</h3>
+      <p class="timeline-note">Another memory or place — keep building this timeline together.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <p class="timeline-year">Add year</p>
+      <h3 class="timeline-event">And the next chapter</h3>
+      <p class="timeline-note">Every journey continues. Add your most recent adventure here.</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <p class="timeline-year">Now</p>
+      <h3 class="timeline-event">To be continued…</h3>
+      <p class="timeline-note">The story is still being written.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="fade-in">
+  <h2 class="footer-names"><em>Faizah</em> &amp; <em>Azhar</em></h2>
+  <p class="footer-since">Together since 2019 &nbsp;·&nbsp; Still going</p>
+  <p class="footer-copy">Made with love. All photos belong to us.</p>
+</footer>
+
+<!-- ── SCROLL ANIMATIONS ── -->
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-in, .timeline-item').forEach(el => {
+    observer.observe(el);
+  });
+
+  // Stagger timeline items
+  document.querySelectorAll('.timeline-item').forEach((item, i) => {
+    item.style.transitionDelay = (i * 0.12) + 's';
+  });
+</script>
+
+</body>
+</html>
